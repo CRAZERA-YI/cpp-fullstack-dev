@@ -1,0 +1,24 @@
+name: Validate Skill
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run skill validation and script unit tests
+        run: python scripts/validate_skill.py
+      - name: Smoke test probe_env and extract_theme
+        run: |
+          python scripts/probe_env.py --compact
+          python scripts/extract_theme.py linear --compact

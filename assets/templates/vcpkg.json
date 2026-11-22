@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "my-cpp-app",
+  "version-semver": "0.1.0",
+  "builtin-baseline": "<replace-with-40-char-vcpkg-git-commit-sha>",
+  "dependencies": [
+    "nlohmann-json",
+    "spdlog",
+    "gtest"
+  ],
+  "features": {
+    "sqlite": {
+      "description": "Enable embedded SQLite persistence",
+      "dependencies": [
+        "sqlite3"
+      ]
+    }
+  }
+}

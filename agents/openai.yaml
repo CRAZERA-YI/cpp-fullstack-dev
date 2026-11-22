@@ -1,0 +1,4 @@
+interface:
+  display_name: "C++ 全栈开发"
+  short_description: "支持 C++ + Web / Qt / Python 全栈架构开发、技术栈规划与跨平台验证"
+  default_prompt: "使用 $cpp-fullstack-dev 运行本 Skill 目录下的 scripts/inspect_project.py 对当前工作区做只读扫描，识别工程架构、构建入口与适用规范。"

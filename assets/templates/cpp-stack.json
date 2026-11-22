@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "architecture": "cpp-core",
+  "components": {
+    "app": {
+      "path": ".",
+      "role": "app",
+      "stack": []
+    }
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpp-stack.schema.json",
+  "title": "cpp-fullstack-dev Project Stack & Component Routing",
+  "type": "object",
+  "required": ["schemaVersion", "components"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1,
+      "description": "Schema version; must be 1."
+    },
+    "architecture": {
+      "type": "string",
+      "enum": ["cpp-web", "cpp-qt", "cpp-python", "cpp-core", "hybrid"],
+      "description": "Primary full-stack architecture mode."
+    },
+    "stackMode": {
+      "type": "string",
+      "enum": ["user-provided", "ai-planned"],
+      "description": "How the project's technology stack was selected."
+    },
+    "components": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Map of component ID to component metadata.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path", "stack"],
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])[^\\\\]+$",
+            "description": "Relative path from repo root using forward slashes; '.' for root."
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "app",
+              "backend",
+              "frontend",
+              "desktop",
+              "python-binding",
+              "library",
+              "tests"
+            ]
+          },
+          "stack": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Open list of stack tags (built-in catalog IDs or user-provided custom stack names)."
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Actual build target name (e.g., CMake target)."
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true,
+            "description": "Component IDs this component depends on."
+          },
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["windows", "linux", "macos"]
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "theme": {
+          "type": "object",
+          "required": ["mode"],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": ["preset", "custom", "native"]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^(?![A-Za-z]:)(?![/\\\\])[^\\\\]+$",
+              "description": "Relative path (forward slashes) to project DESIGN.md or theme.json when mode is custom."
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": { "mode": { "const": "preset" } },
+                "required": ["mode"]
+              },
+              "then": {
+                "required": ["id"],
+                "not": { "required": ["source"] }
+              }
+            },
+            {
+              "if": {
+                "properties": { "mode": { "const": "native" } },
+                "required": ["mode"]
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    { "required": ["id"] },
+                    { "required": ["source"] }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "windows": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "layout": {
+                "type": "string",
+                "minLength": 1
+              },
+              "theme": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

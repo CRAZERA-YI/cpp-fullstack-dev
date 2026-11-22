@@ -1,0 +1,71 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  clang-analyzer-*,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  performance-*,
+  readability-*,
+  -readability-magic-numbers,
+  -readability-identifier-length
+WarningsAsErrors: ''
+# On Windows/macOS, prefer passing `--header-filter='^<repo-root>/(include|src|apps)/'`
+# on the CLI when possible so external SDK paths containing `/include/` are never scanned.
+HeaderFilterRegex: '(^|[/\\])(include|src|apps)[/\\]'
+# ExcludeHeaderFilterRegex requires clang-tidy >= 16; remove if using <= 15.
+ExcludeHeaderFilterRegex: '([/\\]|^)(vcpkg_installed|out|build|build-[^/\\]*|build_[^/\\]*|cmake-build-[^/\\]*|_deps|third_party|3rdparty|external|vendor|generated)[/\\]|^(/usr/|/opt/homebrew/|/Applications/|/Library/)|[/\\](Program Files( \(x86\))?|Windows Kits|Qt)[/\\]|[/\\](moc_|ui_)'
+FormatStyle: file
+# Note:
+# - STL trait typedefs (e.g. value_type) or GoogleTest SetUp/TearDown overrides
+#   may need targeted `// NOLINT(...)` or a relaxed tests/.clang-tidy override.
+# - Qt QObject parent-child ownership (`new QWidget(this)`) may trigger false-positive
+#   NewDeleteLeaks warnings; in Qt projects append `-clang-analyzer-cplusplus.NewDeleteLeaks`.
+CheckOptions:
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypeAliasCase
+    value: CamelCase
+  - key: readability-identifier-naming.TemplateParameterCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+  - key: readability-identifier-naming.MethodCase
+    value: camelBack
+  - key: readability-identifier-naming.ParameterCase
+    value: camelBack
+  - key: readability-identifier-naming.VariableCase
+    value: camelBack
+  - key: readability-identifier-naming.LocalConstantCase
+    value: camelBack
+  - key: readability-identifier-naming.PrivateMemberPrefix
+    value: m_
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: camelBack
+  - key: readability-identifier-naming.ProtectedMemberPrefix
+    value: m_
+  - key: readability-identifier-naming.ProtectedMemberCase
+    value: camelBack
+  - key: readability-identifier-naming.GlobalConstantPrefix
+    value: k
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.StaticConstantPrefix
+    value: k
+  - key: readability-identifier-naming.StaticConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.ClassConstantPrefix
+    value: k
+  - key: readability-identifier-naming.ClassConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
